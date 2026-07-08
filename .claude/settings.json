@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cmd //c \"mklink /J SY-generate-test-cases C:\\\\Users\\\\osshenyang\\\\.agents\\\\skills\\\\SY-generate-test-cases\")"
+    ]
+  }
+}
