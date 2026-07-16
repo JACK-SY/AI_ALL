@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cmd //c \"mklink /J SY-generate-test-cases C:\\\\Users\\\\osshenyang\\\\.agents\\\\skills\\\\SY-generate-test-cases\")"
+      "Bash(cmd //c \"mklink /J SY-generate-test-cases C:\\\\Users\\\\osshenyang\\\\.agents\\\\skills\\\\SY-generate-test-cases\")",
+      "mcp__plugin_playwright_playwright__browser_click"
     ]
   }
 }

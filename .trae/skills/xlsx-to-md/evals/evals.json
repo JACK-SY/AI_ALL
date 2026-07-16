@@ -1,0 +1,75 @@
+{
+  "skill_name": "xlsx-to-md",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我把 测试用例/S4测试用例-v1.0-20260710.xlsx 转成md文件",
+      "expected_output": "生成与xlsx同目录的.md文件，190条用例13个模块，模块概览表完整",
+      "files": ["测试用例/S4测试用例-v1.0-20260710.xlsx"],
+      "expectations": [
+        "输出文件为.md扩展名",
+        "包含模块概览汇总表",
+        "用例编号、标题、优先级字段非空",
+        "前置条件使用引用块(>)格式",
+        "每条用例之间有分割线"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "将这个xlsx生成md版本，输出到 测试用例/S4测试用例-export.md",
+      "expected_output": "指定输出路径生成.md文件，内容格式完整",
+      "files": ["测试用例/S4测试用例-v1.0-20260710.xlsx"],
+      "expectations": [
+        "输出路径为用户指定的路径",
+        "模块概览表P0/P1/P2/P3数量正确",
+        "用例详细内容格式规范"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "把上面的Excel测试用例转成Markdown",
+      "expected_output": "识别上下文中提到的xlsx文件并转换",
+      "files": [],
+      "expectations": [
+        "正确识别用户所指的xlsx文件",
+        "生成的.md文件格式完整规范"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "这个项目的用例列名跟默认不一样，用 TC-ID 做编号、Severity 做优先级，帮我生成md。配置文件在 /tmp/custom-config.json",
+      "expected_output": "使用 --config 参数指定自定义配置文件，正确映射非标准列名完成转换",
+      "files": [],
+      "expectations": [
+        "使用 --config 参数加载自定义配置",
+        "识别并正确映射 TC-ID 到用例编号",
+        "识别并正确映射 Severity 到优先级",
+        "生成完整的模块概览表和用例详情"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "帮我把 测试用例/S4测试用例-v1.0-20260710.md 转回xlsx文件",
+      "expected_output": "反向转换生成xlsx，行列数与原始xlsx一致，必填字段非空",
+      "files": ["测试用例/S4测试用例-v1.0-20260710.md"],
+      "expectations": [
+        "使用 md_to_xlsx.py 脚本执行反向转换",
+        "输出.xlsx文件",
+        "xlsx中用例编号、模块、用例标题、优先级列非空",
+        "用例总数与md元信息中总用例数一致"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "把这个md测试用例转成Excel，输出列名用英文，配置在 /tmp/en-config.json",
+      "expected_output": "使用 --config 加载英文列名配置，输出xlsx列头为自定义英文名",
+      "files": [],
+      "expectations": [
+        "使用 md_to_xlsx.py 脚本执行转换",
+        "使用 --config 参数加载自定义配置",
+        "输出xlsx的列头名称与 config 的 export_column_names 一致",
+        "数据内容完整无丢失"
+      ]
+    }
+  ]
+}
