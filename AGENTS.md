@@ -13,9 +13,11 @@
 | `.sdd/` | AI-SDD框架缓存（PRD模板、参考文档、需求文件） | 仅 `requirement/` 有内容，`specification/` `task/` 未启用 |
 | `.trae/skills/` | Trae 技能 Junction 链接 | 指向 `C:\Users\osshenyang\.agents\skills\` |
 | `需求文档/` | Sprint需求文档存档 | Word 格式历史存档，新需求以知识库 PRD 为准 |
+| `需求待明确/` | 需求疑问清单 | Markdown，记录需求解读过程中发现的疑问，已全部关闭 |
+| `功能模块/` | 平台功能模块说明 | Markdown，每个模块独立文档，含测试用例引用 |
 | `测试用例/` | 测试用例 Excel 交付件 + Markdown 源文件 | Sprint4 起新产出需同时有 Markdown 源 |
 | `测试分析报告/` | 测试分析报告 + 测试计划 | Markdown 为源，Word 为交付导出 |
-| `测试规范档案/` | 7份测试规范文档 | 均 Markdown，不可导出 |
+| `测试规范档案/` | 9份测试规范文档 | 均 Markdown，不可导出；按功能分类：总纲与框架、需求管理、用例设计、流程控制 |
 | `历史BUG库/` | 历史缺陷记录 | Excel 格式 |
 | `版本快照/` | 各Sprint版本快照 | Markdown，含机制说明与 S1~S4 快照 |
 | `项目概览/` | 平台知识图谱 + 知识库仓库 | 知识库为独立 Git 仓库，**勿修改其内容** |
@@ -30,7 +32,7 @@
 2. **领域术语定义**：`项目概览/model-ops-knowledge/CONTEXT.md`
 3. **产品边界与协作流程**：`项目概览/model-ops-knowledge/projects/model-ops-platform/overview/产品边界与协作流程.md`
 4. **信息架构与页面设计**：`项目概览/model-ops-knowledge/projects/model-ops-platform/wireframes/Sprint4_信息架构与页面设计草案.md`
-5. **架构决策记录（ADR）**：`项目概览/model-ops-knowledge/docs/adr/`（共13份，ADR与Sprint决策记录冲突时以ADR为准）
+5. **架构决策记录（ADR）**：`项目概览/model-ops-knowledge/docs/adr/`（共15份，ADR与Sprint决策记录冲突时以ADR为准）
 6. **Sprint决策记录**：`项目概览/model-ops-knowledge/projects/model-ops-platform/overview/Sprint4_决策记录.md`
 7. **技术方案**：`项目概览/model-ops-knowledge/projects/model-ops-platform/tech-specs/`
 8. **本地简化PRD**：`.sdd/requirement/` — 仅作为AI-SDD技能的输入缓存，与知识库PRD冲突时以知识库为准
@@ -111,6 +113,26 @@
 
 ## 测试规范核心规则
 
+> **项目级强制规范**：`测试规范档案/` 下的所有规范文档为项目级统一标准，适用于项目内所有测试活动和自动化流程，而非仅适用于 SY-generate-test-cases 技能。
+
+### 规范读取机制
+
+| 任务类型 | 必须读取的规范 | 可选读取的规范 |
+|---------|---------------|---------------|
+| 需求文档生成 | 《需求文档生成规范》、《测试规范总纲》 | 《需求解析规则规范》、《测试关注点与历史问题规范》 |
+| 需求解读/测试范围识别 | 《需求解析规则规范》 | 《需求追溯矩阵规范》 |
+| 测试分析/风险评估 | 《测试设计方法规范》、《优先级与回归分类规范》、《测试关注点与历史问题规范》 | 《需求解析规则规范》 |
+| 测试用例设计/生成 | 《测试设计方法规范》、《测试规范总纲》、《测试关注点与历史问题规范》 | 全部规范 |
+| 测试用例评审 | 《测试规范总纲》、《需求追溯矩阵规范》 | 《测试设计方法规范》、《测试关注点与历史问题规范》 |
+| 测试用例维护/交付 | 《测试规范总纲》、《需求追溯矩阵规范》 | 《需求解析规则规范》 |
+
+**执行要求**：
+1. 任务开始前必须读取对应专项规范
+2. 输出前必须对照规范自检
+3. 规范间冲突时以《测试规范总纲》和专项规范为准
+
+---
+
 **用例标题格式**（严格遵守）：`【# 需求编号_模块_功能】场景类型：测试点`
 
 **优先级**：P0/P1/P2/P3，由设计方法+风险因子矩阵自动推导得出，不对各优先级占比设目标比例，仅对最终分布做事后统计
@@ -158,12 +180,13 @@
 |------|------|
 | `项目概览/model-ops-knowledge/projects/model-ops-platform/prd/Sprint4_PRD_模型治理与调用链路增强_评审版.md` | **当前有效PRD基线** |
 | `项目概览/model-ops-knowledge/CONTEXT.md` | 领域术语定义（约70个核心术语） |
-| `项目概览/model-ops-knowledge/docs/adr/` | 架构决策记录（ADR 0001~0013） |
+| `项目概览/model-ops-knowledge/docs/adr/` | 架构决策记录（ADR 0001~0015） |
 | `项目概览/model-ops-knowledge/projects/model-ops-platform/overview/Sprint4_决策记录.md` | Sprint4决策（约50条） |
 | `项目概览/model-ops-knowledge/projects/model-ops-platform/overview/Sprint4_技术边界说明.md` | 技术约束与系统契约 |
 | `项目概览/鼎捷雅典娜AI模型中心知识图谱.md` | 平台7域知识图谱 |
-| `测试规范档案/测试规范总纲.md` | 测试规范主文件 |
-| `测试规范档案/需求解析规则规范.md` | 需求ID提取正则与场景流识别关键词 |
-| `测试规范档案/技能已知问题与改进追踪.md` | 技能缺陷与改进状态 |
+| `测试规范档案/总纲与框架/测试规范总纲.md` | 测试规范主文件 |
+| `测试规范档案/需求管理/需求解析规则规范.md` | 需求ID提取正则与场景流识别关键词 |
+| `测试规范档案/流程控制/技能已知问题与改进追踪.md` | 技能缺陷与改进状态 |
+| `测试规范档案/README.md` | 测试规范档案目录索引 |
 | `版本快照/版本快照.md` | Sprint1~4版本记录 |
 | `.sdd/requirement/sprint2-model-platform.md` | 历史PRD缓存（status: archived） |

@@ -78,6 +78,14 @@ def _get_expand_module(cfg: dict) -> bool:
     return cfg.get("expand_module_name", False)
 
 
+def natural_sort_key(s: str) -> list:
+    """自然排序键：使 F1/F2/F11 按数字递增排列，而非字典序（F1,F11,F2,...）。
+    按数字段与非数字段切分，数字段转 int 比较；非 F 开头的编号同样适用。
+    """
+    return [int(t) if t.isdigit() else t.lower()
+            for t in re.split(r"(\d+)", str(s))]
+
+
 def build_numbered_regex() -> re.Pattern:
     """构建匹配 1. ~ 99. 编号前缀的正则。"""
     return re.compile(r"^(\d{1,2})\.\s")
@@ -131,7 +139,7 @@ def build_overview(
     totals = {p: 0 for p in priority_levels}
     total_cases = 0
 
-    for mod in sorted(modules.keys()):
+    for mod in sorted(modules.keys(), key=natural_sort_key):
         cases = modules[mod]
         name = module_names.get(mod, "")
         counts = {p: sum(1 for c in cases if c["优先级"] == p) for p in priority_levels}
@@ -334,7 +342,7 @@ def convert(
     lines.append("---")
     lines.append("")
 
-    for mod in sorted(modules.keys()):
+    for mod in sorted(modules.keys(), key=natural_sort_key):
         name = module_names.get(mod, mod)
         lines.append(f"## {mod} {name}")
         lines.append("")

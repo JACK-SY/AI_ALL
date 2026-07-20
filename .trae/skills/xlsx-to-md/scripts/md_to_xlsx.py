@@ -211,7 +211,6 @@ def parse_modules(lines: list[str]) -> list[dict]:
                     current_case[std_name] = rest
                 current_field = None
             continue
-            continue
 
         # 引用块行（可出现在前置条件、测试步骤、预期结果中）
         if current_field in ("前置条件", "测试步骤", "预期结果") and stripped.startswith(">"):
