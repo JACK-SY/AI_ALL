@@ -179,7 +179,7 @@ def parse_modules(lines: list[str]) -> list[dict]:
             continue
 
         # 分割线
-        if stripped == "---":
+        if stripped == "---" or stripped == "***":
             _flush_field()
             if current_case is not None:
                 rows.append(current_case)
@@ -187,9 +187,10 @@ def parse_modules(lines: list[str]) -> list[dict]:
             current_field = None
             continue
 
-        # 加粗字段标记
-        # 加粗字段标记
+        # 字段标记（支持粗体和纯文本两种格式）
         m = re.match(r"^\*\*(.+?)\*\*[：:]\s*(.*)$", stripped)
+        if not m:
+            m = re.match(r"^(.+?)[：:]\s*(.*)$", stripped)
         if m:
             _flush_field()
             field_name = m.group(1)
@@ -222,9 +223,10 @@ def parse_modules(lines: list[str]) -> list[dict]:
         if current_field in ("测试步骤", "预期结果"):
             if stripped:
                 field_lines.append(stripped)
-            elif not stripped and field_lines:
-                # 空行表示字段内容结束（保留连续空行中的首个）
-                _flush_field()
+            elif not stripped:
+                # 空行在步骤/预期中是分隔符，保留但不连续添加
+                if field_lines and field_lines[-1] != "":
+                    field_lines.append("")
             continue
 
         # 空行跳过
