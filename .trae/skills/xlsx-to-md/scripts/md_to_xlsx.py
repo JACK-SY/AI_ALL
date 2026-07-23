@@ -151,27 +151,22 @@ def parse_modules(lines: list[str]) -> list[dict]:
     for line in lines:
         stripped = line.strip()
 
-        # 模块标题行
-        m = re.match(r"^## (\S+)(?:\s+(.*))?$", stripped)
+        # 模块标题行（支持格式：## F1、## F1 F1、## F1 模块名称）
+        m = re.match(r"^## (F\d+)(?:\s+.*)?$", stripped)
         if m:
             _flush_field()
             code = m.group(1)
-            # 跳过"模块概览"和非模块编号的章节（如"P0 新增用例"等补充章节）
-            if code == "模块" or stripped == "## 模块概览":
-                continue
-            # 以优先级开头的章节（P0/P1/P2/P3/S1/S2/S3等）不是模块分组，跳过
-            if re.match(r"^[PS]\d", code):
-                continue
             current_module = code
             continue
 
-        # 用例编号行
+        # 用例编号行（支持转义下划线格式 TC\_RES\_001）
         m = re.match(r"^### (.+)$", stripped)
         if m:
             _flush_field()
             if current_case is not None:
                 rows.append(current_case)
-            current_case = {"用例编号": m.group(1).strip(), "模块": current_module}
+            tc_id = m.group(1).strip().replace("\\_", "_")
+            current_case = {"用例编号": tc_id, "模块": current_module}
             for f in _FIELDS_ORDER:
                 if f not in current_case:
                     current_case[f] = ""
@@ -207,9 +202,10 @@ def parse_modules(lines: list[str]) -> list[dict]:
                 if rest:
                     field_lines.append(rest)
             else:
-                # 单行字段，直接赋值
+                # 单行字段，直接赋值（标题字段去除转义下划线）
                 if current_case is not None:
-                    current_case[std_name] = rest
+                    value = rest.replace("\\_", "_") if std_name == "用例标题" else rest
+                    current_case[std_name] = value
                 current_field = None
             continue
 
